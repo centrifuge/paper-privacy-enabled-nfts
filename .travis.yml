@@ -1,0 +1,16 @@
+sudo: required
+dist: trusty # Ubuntu 14.04
+services: docker # Enables docker
+setup:
+    - docker pull blang/latex:ctanfull
+script:
+    - docker run --rm -i --user="$(id -u):$(id -g)" --net=none -v "$PWD":/data "blang/latex:ctanfull" latexmk -pdf -outdir=./build
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: Z1CWJTOSwngP1EkYXKoWjXcCpN5EltrKL7VsgEJots+akjiyNLYV+/mt07gY6mI1Xjlxh8vSJOqWmoXgyyYYOEKnPZ7ESHPtov+JDxgmNvNvrA+5HGmltElQGtEVcN99OqUq4dK0tV+iaJb4aNiHiXLdswbisxvwG+3pgQeUeuM26wWfJMcQY7GoNfxBse/58GFrqNfQkyrsESzW9mp7952eg2dm0HpMQ2cK3O+vhaeziQ97sTRJNbqhFxa8AVxWMEoYeHPOHMYWVSWbkpZxWPsT7lGSQGkJIH0J0Dujd9Se2GrwcPP0I81A0Kc7m2E6xyA8EETrfkHYr31N57nJk/BA8ylxinWh5Ee6OUxTxTX2m4MZ+qyeZN+XsrjYOLg4wE17v6vt1Gqgg55u0zPA8O8T8I+ioMWb2xUsX/rxEJ42tGB/fMC7dnwTkKqDpU7oaGJyP4hWr/oB+9NAsvIOiJqfDh7rQc8nw90J5HPgcPCD1KWMfErDufwMmdzuFjNCURds8ungmBZ7x2quVrSeHEVl0Ny5clGr3ElD+Prm3eAAr/FDGGx7BcA+1oldhrvuO0tBTFwVm6WfDvsewUIp9v8yXgLvb/Qt1jNR/Of2U+lI7uU+w6a9UqrkCNdFKPIuZacgNUKy/Hj2ngA5083AQ4g4aUckmonWGM91q4ga6pQ=
+  file: build/main.pdf
+  on:
+    tags: true
+  
